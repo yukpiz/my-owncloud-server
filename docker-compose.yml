@@ -1,14 +1,10 @@
-version: '2.1'
+version: '2'
 
 volumes:
   files:
-    driver: local
   mysql:
-    driver: local
   backup:
-    driver: local
   redis:
-    driver: local
 
 services:
   owncloud:
@@ -31,11 +27,6 @@ services:
       - OWNCLOUD_MYSQL_UTF8MB4=true
       - OWNCLOUD_REDIS_ENABLED=true
       - OWNCLOUD_REDIS_HOST=redis
-    healthcheck:
-      test: ["CMD", "/usr/bin/healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
     volumes:
       - files:/mnt/data
 
@@ -49,11 +40,6 @@ services:
       - MARIADB_DATABASE=owncloud
       - MARIADB_MAX_ALLOWED_PACKET=128M
       - MARIADB_INNODB_LOG_FILE_SIZE=64M
-    healthcheck:
-      test: ["CMD", "/usr/bin/healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
     volumes:
       - mysql:/var/lib/mysql
       - backup:/var/lib/backup
@@ -63,10 +49,5 @@ services:
     restart: always
     environment:
       - REDIS_DATABASES=1
-    healthcheck:
-      test: ["CMD", "/usr/bin/healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
     volumes:
       - redis:/var/lib/redis
